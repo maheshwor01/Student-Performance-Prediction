@@ -1,0 +1,43 @@
+body{
+    background: linear-gradient(135deg,#667eea,#764ba2);
+    min-height:100vh;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.card{
+    border:none;
+    border-radius:20px;
+    background:white;
+}
+
+h2{
+    font-weight:bold;
+    color:#4b3ca7;
+}
+
+.form-control{
+    border-radius:10px;
+}
+
+.form-control:focus{
+    box-shadow:0 0 10px rgba(102,126,234,.5);
+    border-color:#667eea;
+}
+
+.btn-primary{
+    background:#667eea;
+    border:none;
+    border-radius:10px;
+    padding:12px 40px;
+    font-size:18px;
+}
+
+.btn-primary:hover{
+    background:#4b3ca7;
+}
+
+.alert{
+    border-radius:10px;
+    font-size:20px;
+    font-weight:bold;
+}
