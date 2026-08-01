@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Prediction Details</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #222;
+        }
+
+        .navbar {
+            background: #465bd5;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #111;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .item {
+            border: 1px solid #ddd;
+            padding: 18px;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        .label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #222;
+        }
+
+        .pass {
+            display: inline-block;
+            background: #198754;
+            color: white;
+            padding: 7px 16px;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .fail {
+            display: inline-block;
+            background: #dc3545;
+            color: white;
+            padding: 7px 16px;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .score {
+            color: #465bd5;
+            font-size: 28px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 22px;
+            background: #465bd5;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+
+        .back-btn:hover {
+            background: #3548bd;
+        }
+
+        @media (max-width: 700px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<div class="navbar">
+
+    <h2>🎓 Student Performance</h2>
+
+    <div class="nav-links">
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'predict' %}">Predict</a>
+        <a href="{% url 'history' %}">Prediction History</a>
+    </div>
+
+</div>
+
+
+<!-- ================= CONTENT ================= -->
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>Prediction Details</h1>
+
+        <p class="subtitle">
+            Detailed information about this student's performance prediction.
+        </p>
+
+
+        <!-- ================= STUDENT INFORMATION ================= -->
+
+        <h3>Student Information</h3>
+
+        <div class="grid">
+
+            <div class="item">
+                <div class="label">Student Name</div>
+                <div class="value">
+                    {{ student_name }}
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="label">Student ID</div>
+                <div class="value">
+                    {{ roll_number }}
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="label">Course</div>
+                <div class="value">
+                    {{ course }}
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="label">Semester</div>
+                <div class="value">
+                    {{ year }}
+                </div>
+            </div>
+
+        </div>
+
+
+        <br>
+
+
+        <!-- ================= INPUT INFORMATION ================= -->
+
+        <h3>Academic Information</h3>
+
+        <div class="grid">
+
+            <div class="item">
+                <div class="label">Hours Studied</div>
+                <div class="value">
+                    {{ prediction.hours_studied }}
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="label">Attendance</div>
+                <div class="value">
+                    {{ prediction.attendance }}%
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="label">Previous Score</div>
+                <div class="value">
+                    {{ prediction.previous_scores }}
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="label">Prediction Date</div>
+                <div class="value">
+                    {{ created_at|date:"M d, Y H:i" }}
+                </div>
+            </div>
+
+        </div>
+
+
+        <br>
+
+
+        <!-- ================= PREDICTION RESULT ================= -->
+
+        <h3>Prediction Result</h3>
+
+        <div class="grid">
+
+            <div class="item">
+
+                <div class="label">
+                    Predicted Score
+                </div>
+
+                <div class="value score">
+                    {{ predicted_score|floatformat:2 }}
+                </div>
+
+            </div>
+
+
+            <div class="item">
+
+                <div class="label">
+                    Predicted Grade
+                </div>
+
+                <div class="value">
+
+                    {% if predicted_grade == "Pass" %}
+
+                        <span class="pass">
+                            Pass
+                        </span>
+
+                    {% else %}
+
+                        <span class="fail">
+                            Fail
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <div class="item">
+
+                <div class="label">
+                    Probability
+                </div>
+
+                <div class="value">
+                    {{ probability|floatformat:2 }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= BACK BUTTON ================= -->
+
+        <a href="{% url 'history' %}" class="back-btn">
+            ← Back to Prediction History
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>
